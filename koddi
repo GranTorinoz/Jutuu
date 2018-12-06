@@ -1,0 +1,107 @@
+using System;
+using System.Collections.Generic;
+
+namespace ConsoleApp2
+{
+    class Henkilo
+    {
+        public string nimi;
+        public string ika;
+        public string harrastukset;
+
+        public void tulostaHenkilot()
+        {
+            Console.WriteLine(" Nimi:" + nimi + " ikä: " + ika + " harrastukset" + harrastukset);
+        }
+
+        public Henkilo(string n = "", string i = "", string h = "")
+        {
+            nimi = n;
+            ika = i;
+            harrastukset = h;
+        }
+
+        public string tulostaTiedostoon()
+        {
+            return nimi + ";" + ika + ";" + harrastukset + "\r\n";
+        }
+        class Program
+        {
+
+
+
+            static void Main(string[] args)
+            {
+                List<Henkilo> henkilot = new List<Henkilo>();
+
+                Henkilo jari = new Henkilo("Jari", "50", "kalastus");
+                Henkilo seppo = new Henkilo("Seppo", "48", "avantouinti");
+
+                henkilot.Add(jari);
+                henkilot.Add(seppo);
+
+
+                Console.WriteLine("Hello World!");
+                while (true)
+                {
+                    Console.WriteLine("1.Näytä tiedot");
+                    Console.WriteLine("2.Lisää tieto");
+                    Console.WriteLine("3.Lue tiedostosta");
+                    Console.WriteLine("4.Tallenna tiedostoon");
+                    Console.WriteLine("5.Lopeata ohjelma");
+
+                    int valinta = int.Parse(Console.ReadLine());
+                    switch (valinta)
+                    {
+                        case 1:
+                            for (int i = 0; i < henkilot.Count; i++)
+                            {
+                                henkilot[i].tulostaHenkilot();
+                            }
+                            break;
+                        case 2:
+                            Console.WriteLine("Anna nimi: ");
+                            string nimi = Console.ReadLine();
+                            Console.WriteLine("Anna ikä ");
+                            string ika = Console.ReadLine();
+                            Console.WriteLine("Anna harrastus");
+                            string harrastukset = Console.ReadLine();
+
+                            Henkilo lisäys = new Henkilo(nimi, ika, harrastukset);
+                            henkilot.Add(lisäys);
+                            break;
+                        case 3:
+                            
+                           foreach (string line in System.IO.File.ReadLines(
+                          @"C:\Data\YeaMon.txt"))
+
+                            {
+                                string rivi_nimi = line.Split(';')[0];
+                                string rivi_ikä = line.Split(';')[1];
+                                string rivi_harrastukset = line.Split(';')[2];
+                                Henkilo rivi_lisäys = new Henkilo(rivi_nimi,
+                                    rivi_ikä, rivi_harrastukset);                             
+                                henkilot.Add(rivi_lisäys);
+                            }
+                            break;
+
+                        case 4:
+                            string teksti = "";
+                            foreach (Henkilo data in henkilot)
+                            {
+                                teksti = teksti + data.tulostaTiedostoon();
+                            }
+                            System.IO.File.WriteAllText(
+                               @"C:\Data\YeaMon.txt", teksti);
+                            break;
+                        case 5:
+                            Console.WriteLine("Toivottavasti tykkäsit ohjelmasta! :)");
+                            System.Environment.Exit(1);
+                            break;
+                    }
+                }
+            
+            }
+        }
+    }
+}
